@@ -41,16 +41,20 @@ class RecordValidation():
         q = (
             DB.session.query(SyntheseOneRecord)
             .filter(SyntheseOneRecord.id_synthese==self.id_synthese)
-        )
-        return q.one().as_dict(True)  
+        ) #TODO Ajouter geom !
+        return q.one().as_dict(True)
     
     def vote(self,statut,id_validator):
-        addValidation = TValidationsCol(
-            uuid_attached_row = self.uuid,
-            id_nomenclature_valid_status = statut,
-            id_validator = id_validator
-        )
-        DB.session.add(addValidation)
-        DB.session.commit()
-        DB.session.close()
+        try :
+            addValidation = TValidationsCol(
+                uuid_attached_row = self.uuid,
+                id_nomenclature_valid_status = statut,
+                id_validator = id_validator
+            )
+            DB.session.add(addValidation)
+            DB.session.commit()
+            DB.session.close()
+            return True
+        except InternalError as e:
+            return False
 

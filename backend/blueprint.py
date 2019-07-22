@@ -52,24 +52,19 @@ def index():
 @permissions.check_cruved_scope("C", True, module_code="VALIDATION_COL")
 @json_resp
 def post_status_vote(info_role, id_synthese):
-    try :
-        data = dict(request.get_json())
-        id_validation_status = data["statut"]
-        validation_comment = data["comment"]
-        
-        if id_validation_status == "":
-            return "Aucun statut de validation n'est sélectionné", 400
-        
-        obs = RecordValidation(id_synthese)
-        obs.vote(data['statut'],id_validator = info_role.id_role)
-        
+    data = dict(request.get_json())
+    id_validation_status = data["statut"]
+    validation_comment = data["comment"]
+    
+    if id_validation_status == "":
+        return "Aucun statut de validation n'est sélectionné", 400
+    
+    obs = RecordValidation(id_synthese)
+    if obs.vote(data['statut'],id_validator = info_role.id_role):
         return data
-    except InternalError as e: #Se produit généralement si les votes sont fermés pour cette observation
-        return ( 
-            dict(error=str(e)),
-            403
-        )
-
+    else: #Se produit généralement si les votes sont fermés pour cette observation
+        return ( dict(error="vote non pris en compte"), 403 )
+    
 
 """
 Lister les observations à valider
@@ -115,6 +110,6 @@ def get_next_obs(info_role,cd_nom):
     
     obs = RecordValidation(potential_reccord[0])
     
-    return obs.record
+    return obs.getFullRecord()
     #TODO utiliser ORM ?
 
