@@ -11,7 +11,7 @@ from pypnusershub.db.models import User
 @serializable
 class TValidationsCol(DB.Model):
     __tablename__ = "t_vote_validation"
-    __table_args__ = {"schema": "gn_validation_col"}
+    __table_args__ = {"schema": "gn_module_validation_col"}
 
     id_vote_validation = DB.Column(DB.Integer, primary_key=True)
     uuid_attached_row = DB.Column(UUID(as_uuid=True))
