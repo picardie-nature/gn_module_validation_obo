@@ -66,29 +66,9 @@ def post_status_vote(info_role, id_synthese):
         return ( dict(error="vote non pris en compte"), 403 )
     
 
-"""
-Lister les observations à valider
-"""
-@blueprint.route("/taxon/<cd_nom>", methods=["GET"])
-@permissions.check_cruved_scope("C", True, module_code="VALIDATION_COL")
-@json_resp
-def get_synthese(info_role, cd_nom):
-    sql="""
-        SELECT id_synthese FROM gn_synthese.synthese WHERE cd_nom=(:cd_nom) AND id_nomenclature_valid_status=318 LIMIT 10
-    """
-    data=DB.session.execute(sql, dict(cd_nom=cd_nom))
-    out=list()
-    for e in data:
-        out.append(e.id_synthese)
-    #TODO filtrer les JDD non validables, utiliser ORM
-    #TODO prendre les taxon childs
-    #TODO filtrer les données auxquels les validateurs à accès
-    return out
-
-#Bibliotheque des niveaux de validation : api/nomenclatures/nomenclature/STATUT_VALID
 
 """
-Prochaine observation à valider : la donnée la plus récente en attente de validation
+Prochaine observation à valider : la donnée la plus récente en attente de validation (random parmis les 10 plus récente)
 """
 @blueprint.route("/taxon/<cd_nom>/next", methods=["GET"])
 @permissions.check_cruved_scope("C", True, module_code="VALIDATION_COL")
@@ -113,3 +93,4 @@ def get_next_obs(info_role,cd_nom):
     return obs.getFullRecord()
     #TODO utiliser ORM ?
 
+#Bibliotheque des niveaux de validation : api/nomenclatures/nomenclature/STATUT_VALID
