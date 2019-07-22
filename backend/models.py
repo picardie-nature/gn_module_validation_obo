@@ -8,6 +8,8 @@ from geoalchemy2 import Geometry
 from pypnnomenclature.models import TNomenclatures
 from pypnusershub.db.models import User
 
+from geonature.core.gn_synthese.models import SyntheseOneRecord, Synthese
+
 @serializable
 class TValidationsCol(DB.Model):
     __tablename__ = "t_vote_validation"
@@ -28,4 +30,27 @@ class TValidationsCol(DB.Model):
     )
 
 
+
+class RecordValidation():
+    def __init__(self,id_synthese):
+        self.id_synthese = id_synthese
+        self.uuid = DB.session.query(Synthese.unique_id_sinp).filter(Synthese.id_synthese == int(id_synthese)
+        )
+        
+    def getFullRecord(self):
+        q = (
+            DB.session.query(SyntheseOneRecord)
+            .filter(SyntheseOneRecord.id_synthese==self.id_synthese)
+        )
+        return q.one().as_dict(True)  
+    
+    def vote(self,statut,id_validator):
+        addValidation = TValidationsCol(
+            uuid_attached_row = self.uuid,
+            id_nomenclature_valid_status = statut,
+            id_validator = id_validator
+        )
+        DB.session.add(addValidation)
+        DB.session.commit()
+        DB.session.close()
 
