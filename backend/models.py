@@ -3,6 +3,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.sql import func
 from geonature.utils.utilssqlalchemy import serializable, geoserializable
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.exc import InternalError
 from geoalchemy2 import Geometry
 
 from pypnnomenclature.models import TNomenclatures

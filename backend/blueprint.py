@@ -8,7 +8,6 @@ import pdb
 import re
 
 from sqlalchemy import select, desc, cast, DATE, func
-from sqlalchemy.exc import InternalError
 
 import datetime
 from random import shuffle
