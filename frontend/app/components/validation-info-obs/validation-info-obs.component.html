@@ -28,4 +28,17 @@
     </div>
 </div>
 
+<div class="col col-sm-4">
+    <div class="card">
+        <div class="card-header">
+            Localisation
+        </div>
+        <div class="card-body">
+            <pnx-map *ngIf="latLng" height="50vh" [center]="latLng" [zoom]="11"> 
+                <pnx-geojson [geojson]="geoJson" zoomOnLayer="false"></pnx-geojson>
+            </pnx-map>
+        </div>
+    </div>
+</div>
+
 </div> <!--Row-->
