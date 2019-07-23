@@ -17,9 +17,15 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class DataService {
-
     constructor(private _api: HttpClient) { }
+
     getOneSyntheseObservation(cd_nom) {
         return this._api.get<GeoJSON>(`${AppConfig.API_ENDPOINT}/validation_col/taxon/${cd_nom}/next`);
+    }
+
+    postVote(id_synthese, statut){
+        return this._api.post<any>(
+            `${AppConfig.API_ENDPOINT}/validation_col/${id_synthese}`, {comment:'test',statut:statut }
+        );
     }
 }
