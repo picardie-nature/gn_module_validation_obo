@@ -29,13 +29,6 @@ class TValidationsCol(DB.Model):
         User, primaryjoin=(User.id_role == id_validator), foreign_keys=[id_validator]
     )
 
-@serializable
-@geoserializable
-class SyntheseOneRecordGeom(VSyntheseDecodeNomenclatures):
-    __tablename__ = "synthese"
-    __table_args__ = {"schema": "gn_synthese", "extend_existing": True}
-    the_geom_4326 = DB.Column(Geometry)
-
 class RecordValidation():
     def __init__(self,id_synthese):
         self.id_synthese = id_synthese
@@ -46,7 +39,7 @@ class RecordValidation():
         q = (
             DB.session.query(SyntheseOneRecord)
             .filter(SyntheseOneRecord.id_synthese==self.id_synthese)
-        ) #TODO Ajouter geom !
+        )
         return q.one().as_geofeature(geoCol='the_geom_4326',idCol='id_synthese',recursif=True)
     
     def vote(self,statut,id_validator):
