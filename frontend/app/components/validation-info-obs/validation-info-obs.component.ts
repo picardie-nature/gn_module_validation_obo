@@ -9,27 +9,9 @@ import { DataService } from '../../services/data.service';
 export class ValidationInfoObsComponent implements OnInit {
 
   @Input() cd_nom: number;
-  @Input() currentTaxon: number;
-  @Input() stop: number;
-  @Output() taxsup = new EventEmitter<string>();
-  taxinf : any;
+  properties: any[];
 
   constructor(private dataService: DataService) {}
-
-  openTaxSup(){
-        //console.log(this.parentId)
-        this.taxsup.emit(this.parentId);
-    }
-
-  openTaxInf(){
-        console.log(this.taxInf)
-
-  }
-
-  getBgcolor(){
-     if(this.currentTaxon == this.cd_nom){ return '#FF0000' }
-    else { return '#000000' }
-  }
 
   ngOnInit() {
 

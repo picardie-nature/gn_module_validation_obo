@@ -1,5 +1,31 @@
-<div class="card" style="width: 18rem;">
-    <div class="card-body" [ngStyle]="{color: getBgcolor()}">
-information d'une obs
+<ng-template #default_value><small>Non renseigné</small></ng-template>
+
+<div class="row">
+
+<div class="col col-sm-4">
+    <div class="card">
+        <div class="card-header">
+            Taxon
+        </div>
+        <div class="card-body">
+            <p> <strong>{{ properties?.nom_cite}}</strong> [ {{ properties?.cd_nom }} ] </p>
+            <p>Effectif : {{ properties?.count_min }}-{{ properties?.count_max }} {{ properties?.obj_count }} </p>
+            <p> Commentaire : <span *ngIf="properties?.comment_description;else default_value"> {{ properties?.comment_description }}</span></p>
+        </div>
     </div>
 </div>
+
+<div class="col col-sm-4">
+    <div class="card">
+        <div class="card-header">
+            Contexte de l'observation
+        </div>
+        <div class="card-body">
+            <p>Observateur : {{properties?.observers}}</p>
+            <p> Methode d'observation {{ properties?.obs_method }} </p>
+            <p> Commentaire : <span *ngIf="properties?.comment_context;else default_value"> {{ properties?.comment_context }}</span></p>
+        </div>
+    </div>
+</div>
+
+</div> <!--Row-->
