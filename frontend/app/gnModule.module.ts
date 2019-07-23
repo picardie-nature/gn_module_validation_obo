@@ -5,6 +5,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { HttpClientModule } from '@angular/common/http';
 import { ValidationColComponent } from "./components/validationcol.component";
 import { ValidationInfoObsComponent } from './components/validation-info-obs/validation-info-obs.component';
+import { ValidationToolbar } from './components/validation-toolbar/validation-toolbar.component';
 
 import { DataService } from './services/data.service';
 
@@ -13,7 +14,7 @@ const routes: Routes = [{ path: "", component: ValidationColComponent }];
 
 @NgModule({
   declarations: [
-        ValidationColComponent,ValidationInfoObsComponent
+        ValidationColComponent,ValidationInfoObsComponent, ValidationToolbar
     ],
   imports: [CommonModule, GN2CommonModule, RouterModule.forChild(routes),HttpClientModule],
   providers: [DataService],
