@@ -8,15 +8,17 @@ import { DataService } from '../../services/data.service';
 })
 export class ValidationToolbar implements OnInit {
 
-    //ajouter l'id_synthese en input
+    @Input() id_synthese: number;
+    @Output() id_statut_voted = new EventEmitter<string>();
     constructor(
         private dataservice: DataService,
         private toastr: ToastrService
     ) {}
 
     onVote(value){
+        this.id_statut_voted.emit(value);
         console.log('clic vote button :'+value);
-        this.dataservice.postVote(780972,value).subscribe(
+        this.dataservice.postVote(this.id_synthese,value).subscribe(
             data => {
                 console.log(data);
                 this.toastr.success('Vote enregistré');

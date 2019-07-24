@@ -26,7 +26,10 @@ export class ValidationInfoObsComponent implements OnInit {
         }
 
     )
-
-
+  }
+  onVote(e){
+    console.log(e);
+    console.log('onVote depuis info-obs');
+    this.ngOnChanges();
   }
 }

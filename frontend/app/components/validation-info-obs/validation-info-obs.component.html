@@ -1,5 +1,10 @@
 <ng-template #default_value><small>Non renseigné</small></ng-template>
 
+
+<div class="row">
+    <validation-toolbar *ngIf="properties?.id_synthese" [id_synthese]="properties.id_synthese" (id_statut_voted)=onVote($event)></validation-toolbar>
+</div>
+
 <div class="row">
 
 <div class="col col-sm-4">
