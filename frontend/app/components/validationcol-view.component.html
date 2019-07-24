@@ -1,4 +1,4 @@
-<ng-template #please_select_taxon><small>Veuillez selectionner un taxon à valider</small></ng-template>
+<ng-template #please_select_taxon><small>Veuillez selectionner une famille ou un ordre à valider</small></ng-template>
 <div class="row">
     <div class="col col-sm-2">
         <div class="card" style="width: 18rem;">
@@ -9,9 +9,6 @@
     </div>
     <div class="col col-sm-10">
         <div class="card card-body">
-            <div class="row">
-                <div class="col-sm"></div>
-            </div>
             <div class="row">
                 <div class="col-sm"><validation-info-obs [cd_nom]="taxon.cd_nom" *ngIf="taxon; else please_select_taxon"> </validation-info-obs></div>
             </div>

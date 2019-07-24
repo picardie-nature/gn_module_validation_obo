@@ -15,7 +15,8 @@ export class ValidationInfoObsComponent implements OnInit {
   constructor(private dataService: DataService) {}
 
   ngOnChanges() {
-
+    this.data=null;
+    this.properties=null;
      this.dataService.getOneSyntheseObservation(this.cd_nom).subscribe(
         data => {
             this.properties=data['properties'];
@@ -30,6 +31,8 @@ export class ValidationInfoObsComponent implements OnInit {
   onVote(e){
     console.log(e);
     console.log('onVote depuis info-obs');
+    this.data=null;
+    this.properties=null;
     this.ngOnChanges();
   }
 }

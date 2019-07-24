@@ -1,21 +1,24 @@
 <div class="card card-body">
-    
+    id = {{ id_synthese }}
 
     <div class="row">
         <div class="col col-sm-2">
-                <button type="button" class="btn btn-success" (click)="onVote('318')">Certain</button>
+                <button type="button" class="btn btn-success" [disabled]="!id_synthese" (click)="onVote('318')">Certain</button>
         </div>
         <div class="col col-sm-2">
-                <button type="button" class="btn btn-warning" (click)="onVote('320')">Douteux</button>
+                <button type="button" class="btn btn-success" [disabled]="!id_synthese" (click)="onVote('319')">Très probable</button>
         </div>
         <div class="col col-sm-2">
-                <button type="button" class="btn btn-danger">Invalide</button>
+                <button type="button" class="btn btn-warning" [disabled]="!id_synthese" (click)="onVote('320')">Douteux</button>
         </div>
         <div class="col col-sm-2">
-                <button type="button" class="btn btn-dark">Non réalisable</button>
+                <button type="button" class="btn btn-danger" [disabled]="!id_synthese" (click)="onVote('321')">Invalide</button>
         </div>
         <div class="col col-sm-2">
-                <button type="button" class="btn btn-info">Passer</button>
+                <button type="button" class="btn btn-dark" [disabled]="!id_synthese" (click)="onVote('322')">Non réalisable</button>
+        </div>
+        <div class="col col-sm-2">
+                <button type="button" class="btn btn-info" disabled >Passer</button>
         </div>
 
     </div>

@@ -2,7 +2,9 @@
 
 
 <div class="row">
-    <validation-toolbar *ngIf="properties?.id_synthese" [id_synthese]="properties.id_synthese" (id_statut_voted)=onVote($event)></validation-toolbar>
+    <div class="col col-sm-12">
+        <validation-toolbar [id_synthese]="properties?.id_synthese" (id_statut_voted)=onVote($event)></validation-toolbar>
+    </div>
 </div>
 
 <div class="row">
@@ -10,7 +12,7 @@
 <div class="col col-sm-4">
     <div class="card">
         <div class="card-header">
-            Taxon
+            Taxon (id synthese : {{ properties?.id_synthese }})
         </div>
         <div class="card-body">
             <p> <strong>{{ properties?.nom_cite}}</strong> [ {{ properties?.cd_nom }} ] </p>

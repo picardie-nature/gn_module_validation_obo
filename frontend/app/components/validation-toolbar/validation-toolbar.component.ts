@@ -10,21 +10,25 @@ export class ValidationToolbar implements OnInit {
 
     @Input() id_synthese: number;
     @Output() id_statut_voted = new EventEmitter<string>();
+
     constructor(
-        private dataservice: DataService,
+        private dataService: DataService,
         private toastr: ToastrService
-    ) {}
+    ) { };
+
+    ngOnChanges(){
+    };
 
     onVote(value){
-        this.id_statut_voted.emit(value);
-        console.log('clic vote button :'+value);
-        this.dataservice.postVote(this.id_synthese,value).subscribe(
+
+        this.dataService.postVote(this.id_synthese,value).subscribe(
             data => {
-                console.log(data);
                 this.toastr.success('Vote enregistré');
+                this.id_statut_voted.emit(value);
             },
             err => {
                 this.toastr.warning('Il y a eu une erreur');
+                this.id_statut_voted.emit(value);
             }
         );
     }
