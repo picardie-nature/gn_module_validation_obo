@@ -15,7 +15,7 @@
             Taxon (id synthese : {{ properties?.id_synthese }})
         </div>
         <div class="card-body">
-            <p> <strong>{{ properties?.nom_cite}}</strong> [ {{ properties?.cd_nom }} ] </p>
+            <p> <strong>{{ properties?.nom_cite}}</strong> [ {{ properties?.cd_nom }} ] - {{ obsTaxon?.nom_vern }}</p>
             <p>Effectif : {{ properties?.count_min }}-{{ properties?.count_max }} {{ properties?.obj_count }} </p>
             <p> Commentaire : <span *ngIf="properties?.comment_description;else default_value"> {{ properties?.comment_description }}</span></p>
         </div>
