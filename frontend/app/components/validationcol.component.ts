@@ -8,18 +8,7 @@ import { DataService } from '../services/data.service';
   templateUrl: "validationcol.component.html"
 })
 export class ValidationColComponent implements OnInit {
+
   constructor(private dataService: DataService) {}
-    var_test:string='abcd';
-    var_test2:string='qwerty';
 
-    
-  /*ngOnInit() {
-        this.taxrefService.getTaxonChildren(0).subscribe(
-            data => {
-                this.taxonsArray=data;
-
-            }
-        )
-
-    }*/
 }

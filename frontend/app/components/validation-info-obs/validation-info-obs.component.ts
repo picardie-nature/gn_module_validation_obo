@@ -13,8 +13,8 @@ export class ValidationInfoObsComponent implements OnInit {
   data:any[];
 
   constructor(private dataService: DataService) {}
-  
-  ngOnInit() {
+
+  ngOnChanges() {
 
      this.dataService.getOneSyntheseObservation(this.cd_nom).subscribe(
         data => {
