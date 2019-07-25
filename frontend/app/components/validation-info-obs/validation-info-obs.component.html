@@ -12,7 +12,7 @@
     <div class="col col-sm-4">
         <div class="card">
             <div class="card-header">
-                Taxon (id synthese : {{ properties?.id_synthese }})
+                Occurence
             </div>
             <div class="card-body">
                 <table class="table table-sm">
@@ -20,14 +20,15 @@
                         <td>Nom</td>
                         <td><strong>{{ properties?.nom_cite}}</strong><span *ngIf="obsTaxon?.nom_vern"> - {{ obsTaxon?.nom_vern }} </span><small>[ {{ properties?.cd_nom }} ]</small></td>
                     </tr>
-
                     <tr>
                         <td>Effectif</td>
-                        <td><span  *ngIf="properties?.count_min">{{ properties?.count_min }}<span *ngIf="properties?.count_max!=properties?.count_min">-{{ properties?.count_max }}</span></span> {{ properties?.obj_count }}</td>
+                        <td><span  *ngIf="properties?.count_min">{{ properties?.count_min }}<span *ngIf="properties?.count_max!=properties?.count_min">-{{ properties?.count_max }}</span> {{ properties?.obj_count }} </span></td>
+                    </tr>
+                    <tr>
+                        <td>Commentaire</td>
+                        <td><span *ngIf="properties?.comment_description">{{ properties?.comment_description }}</span> </td>
                     </tr>
                 </table>
-
-                <p> Commentaire : <span *ngIf="properties?.comment_description;else default_value"> {{ properties?.comment_description }}</span></p>
             </div>
         </div>
     </div>
@@ -54,6 +55,10 @@
                     <tr>
                         <td>Statut reproducteur</td>
                         <td> <span *ngIf="properties?.bio_status;else default_value"> {{ properties?.bio_status }}</span></td>
+                    </tr>
+                    <tr> 
+                        <td>Références</td>
+                        <td>{{ properties?.id_synthese }} - {{ properties?.unique_id_sinp }}</td>
                     </tr>
                 </table>
             </div>

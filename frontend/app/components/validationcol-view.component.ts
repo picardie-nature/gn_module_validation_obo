@@ -13,11 +13,12 @@ export class ValidationColViewComponent implements OnInit {
      private dataService: DataService,
      private toastr: ToastrService
   ) {}
+
   loadTaxon(a){ 
     this.taxon = null;
     console.log('chargement de ');
     console.log(a.cd_nom);
     this.taxon = a;
-    this.toastr.info('Debut de la validation pour '+a.cd_nom);
+    this.toastr.info('Debut de la validation pour <i>'+a.lb_nom+'</i>','Début',{allowHtml: true});
   }
 }
