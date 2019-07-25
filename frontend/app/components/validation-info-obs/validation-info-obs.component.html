@@ -9,54 +9,118 @@
 
 <div class="row">
 
-<div class="col col-sm-4">
-    <div class="card" style="height:50vh">
-        <div class="card-header">
-            Taxon (id synthese : {{ properties?.id_synthese }})
-        </div>
-        <div class="card-body">
-            <p> <strong>{{ properties?.nom_cite}}</strong> [ {{ properties?.cd_nom }} ] - {{ obsTaxon?.nom_vern }}</p>
-            <p>Effectif : {{ properties?.count_min }}-{{ properties?.count_max }} {{ properties?.obj_count }} </p>
-            <p> Commentaire : <span *ngIf="properties?.comment_description;else default_value"> {{ properties?.comment_description }}</span></p>
-        </div>
-    </div>
-</div>
+    <div class="col col-sm-4">
+        <div class="card">
+            <div class="card-header">
+                Taxon (id synthese : {{ properties?.id_synthese }})
+            </div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <tr>
+                        <td>Nom</td>
+                        <td><strong>{{ properties?.nom_cite}}</strong><span *ngIf="obsTaxon?.nom_vern"> - {{ obsTaxon?.nom_vern }} </span><small>[ {{ properties?.cd_nom }} ]</small></td>
+                    </tr>
 
-<div class="col col-sm-4">
-    <div class="card" style="height:50vh">
-        <div class="card-header">
-            Contexte de l'observation
-        </div>
-        <div class="card-body">
-            <p>Observateur : {{properties?.observers}}</p>
-            <p> Methode d'observation {{ properties?.obs_method }} </p>
-            <p> Commentaire : <span *ngIf="properties?.comment_context;else default_value"> {{ properties?.comment_context }}</span></p>
-        </div>
-    </div>
-</div>
+                    <tr>
+                        <td>Effectif</td>
+                        <td><span  *ngIf="properties?.count_min">{{ properties?.count_min }}<span *ngIf="properties?.count_max!=properties?.count_min">-{{ properties?.count_max }}</span></span> {{ properties?.obj_count }}</td>
+                    </tr>
+                </table>
 
-<div class="col col-sm-4">
-    <div class="card" style="height:50vh">
-        <div class="card-header">
-            Localisation
-        </div>
-        <div class="card-body">
-            <pnx-map *ngIf="latLng" height="35vh" [center]="latLng" [zoom]="11"> 
-                <pnx-geojson [geojson]="geoJson" zoomOnLayer="false"></pnx-geojson>
-            </pnx-map>
+                <p> Commentaire : <span *ngIf="properties?.comment_description;else default_value"> {{ properties?.comment_description }}</span></p>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="col col-sm-4" style="height:50vh">
-    <div class="card">
-        <div class="card-header">
-            Aide à la validation
-        </div>
-        <div class="card-body">
-            <validation-auto></validation-auto>
+    <div class="col col-sm-4">
+        <div class="card">
+            <div class="card-header">
+                Etat et comportement
+            </div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <tr>
+                        <td>Stade de vie</td>
+                        <td> <span *ngIf="properties?.life_stage;else default_value"> {{ properties?.life_stage }}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Sexe</td>
+                        <td> <span *ngIf="properties?.sex;else default_value"> {{ properties?.sex }}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Etat</td>
+                        <td> <span *ngIf="properties?.bio_condition;else default_value"> {{ properties?.bio_condition }}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Statut reproducteur</td>
+                        <td> <span *ngIf="properties?.bio_status;else default_value"> {{ properties?.bio_status }}</span></td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
-</div>
+
+    <div class="col col-sm-4">
+        <div class="card">
+            <div class="card-header">
+                Contexte de l'observation
+            </div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <tr>
+                        <td>Observateur(s)</td>
+                        <td> <span *ngIf="properties?.observers;else default_value"> {{ properties?.observers }}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Methode d'observation</td>
+                        <td> <span *ngIf="properties?.obs_method;else default_value"> {{ properties?.obs_method }}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Commentaire</td>
+                        <td> <span *ngIf="properties?.comment_context;else default_value"> {{ properties?.comment_context }}</span></td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col col-sm-4">
+        <div class="card">
+            <div class="card-header">
+                Documents
+            </div>
+            <div class="card-body">
+                <small>*photo et docs*</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col col-sm-4">
+        <div class="card">
+            <div class="card-header">
+                Localisation
+            </div>
+            <div class="card-body">
+                <pnx-map *ngIf="latLng" height="35vh" [center]="latLng" [zoom]="11"> 
+                    <pnx-geojson [geojson]="geoJson" zoomOnLayer="false"></pnx-geojson>
+                </pnx-map>
+            </div>
+            <div class="card-footer">
+                <span *ngFor="let area of properties?.areas;let isFirst=first ; let isLast=last"><span *ngIf="isFirst">Commune : </span> <span *ngIf="area.area_type.type_code=='COM'"> {{area.area_name}} [{{ area.area_code | slice : 0 : 2}}] <span *ngIf="!isLast">, </span> </span> </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col col-sm-4">
+        <div class="card">
+            <div class="card-header">
+                Aide à la validation
+            </div>
+            <div class="card-body">
+                <validation-auto></validation-auto>
+            </div>
+        </div>
+    </div>
 
 </div> <!--Row-->

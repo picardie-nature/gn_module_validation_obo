@@ -4,7 +4,8 @@ import { DataService } from '../../services/data.service';
 
 @Component({
   selector: "validation-info-obs",
-  templateUrl: "validation-info-obs.component.html"
+  templateUrl: "validation-info-obs.component.html",
+  styleUrls: ["validation-info-obs.component.scss"]
 })
 export class ValidationInfoObsComponent implements OnInit {
 
