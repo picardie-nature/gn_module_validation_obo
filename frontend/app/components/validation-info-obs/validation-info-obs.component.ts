@@ -17,6 +17,7 @@ export class ValidationInfoObsComponent implements OnInit {
   ngOnChanges() {
     this.data=null;
     this.properties=null;
+    this.obsTaxon=null;
     this.dataService.getOneSyntheseObservation(this.cd_nom).subscribe(
         data => {
             this.properties=data['properties'];

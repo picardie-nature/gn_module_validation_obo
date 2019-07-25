@@ -1,5 +1,5 @@
 <div class="card card-body">
-    id = {{ id_synthese }}
+    <span hidden>id_synthese = {{ id_synthese }}</span>
 
     <div class="row">
         <div class="col col-sm-2">
@@ -18,7 +18,7 @@
                 <button type="button" class="btn btn-dark" [disabled]="!id_synthese" (click)="onVote('322')">Non réalisable</button>
         </div>
         <div class="col col-sm-2">
-                <button type="button" class="btn btn-info" disabled >Passer</button>
+                <button type="button" class="btn btn-info" disabled>Passer</button>
         </div>
 
     </div>
