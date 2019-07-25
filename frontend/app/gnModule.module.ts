@@ -8,6 +8,8 @@ import { ValidationColViewComponent } from "./components/validationcol-view.comp
 import { ValidationInfoObsComponent } from './components/validation-info-obs/validation-info-obs.component';
 import { ValidationToolbar } from './components/validation-toolbar/validation-toolbar.component';
 import { ValidationSelectTaxon } from './components/validation-select-taxon/validation-select-taxon.component';
+import { ValidationStatsTaxon } from './components/validation-stats-taxon/validation-stats-taxon.component';
+import { ValidationAuto } from './components/validation-auto/validation-auto.component';
 
 import { DataService } from './services/data.service';
 import { FormService } from './services/form.service';
@@ -17,7 +19,7 @@ const routes: Routes = [{ path: "", component: ValidationColComponent }];
 
 @NgModule({
   declarations: [
-        ValidationColComponent,ValidationColViewComponent,ValidationInfoObsComponent, ValidationToolbar, ValidationSelectTaxon
+        ValidationColComponent,ValidationColViewComponent,ValidationInfoObsComponent, ValidationToolbar, ValidationSelectTaxon, ValidationStatsTaxon, ValidationAuto
     ],
   imports: [CommonModule, GN2CommonModule, RouterModule.forChild(routes),HttpClientModule],
   providers: [DataService,FormService],
