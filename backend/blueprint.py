@@ -113,7 +113,7 @@ def get_stats_taxon(cd_nom):
 	    ) as en_cours
     from gn_synthese.synthese s
     left join gn_module_validation_col.t_vote_validation v on v.uuid_attached_row = s.unique_id_sinp
-    where s.date_min >= '2019-01-01' and s.cd_nom in (select * from taxonomie.find_all_taxons_children(:cd_nom) UNION SELECT (:cd_nom) )
+    where s.date_min >= '2018-01-01' and s.cd_nom in (select * from taxonomie.find_all_taxons_children(:cd_nom) UNION SELECT (:cd_nom) )
     """
     result = DB.session.execute(sql, dict(cd_nom=cd_nom))
     return dict(result.fetchone())
