@@ -1,9 +1,14 @@
 <ng-template #please_select_taxon><small>Veuillez selectionner une famille ou un ordre à valider</small></ng-template>
 <div class="row">
     <div class="col col-sm-2">
-        <div class="card" style="width: 18rem;">
+        <div class="card">
               <div class="card-body">
                 <validation-select-taxon (selectedTaxon)="loadTaxon($event)"></validation-select-taxon>
+              </div>
+        </div>
+         <div class="card">
+              <div class="card-body">
+                <validation-stats-taxon></validation-stats-taxon>
               </div>
         </div>
     </div>
