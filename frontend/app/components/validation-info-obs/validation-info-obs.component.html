@@ -22,11 +22,11 @@
                     </tr>
                     <tr>
                         <td>Effectif</td>
-                        <td><span  *ngIf="properties?.count_min">{{ properties?.count_min }}<span *ngIf="properties?.count_max!=properties?.count_min">-{{ properties?.count_max }}</span> {{ properties?.obj_count }} </span></td>
+                        <td><span  *ngIf="properties?.count_min;else default_value">{{ properties?.count_min }}<span *ngIf="properties?.count_max!=properties?.count_min">-{{ properties?.count_max }}</span> {{ properties?.obj_count }} </span></td>
                     </tr>
                     <tr>
                         <td>Commentaire</td>
-                        <td><span *ngIf="properties?.comment_description">{{ properties?.comment_description }}</span> </td>
+                        <td><span *ngIf="properties?.comment_description;else default_value">{{ properties?.comment_description }}</span> </td>
                     </tr>
                 </table>
             </div>
