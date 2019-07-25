@@ -92,4 +92,29 @@ def get_next_obs(info_role,cd_nom):
     return obs.getFullRecord()
     #TODO utiliser ORM ?
 
+"""
+Statistiques de validation sur un taxon
+"""
+@blueprint.route("/stats/<cd_nom>", methods=["GET"])
+@json_resp
+def get_stats_taxon(cd_nom):
+    #requete probablement a optimiser
+    sql="""
+    select
+	    count(distinct 
+		    case when s.id_nomenclature_valid_status not in (318,319,320,321,322) then s.id_synthese 
+		    else null END) as non_evalue,
+	    count(distinct
+		    case when s.id_nomenclature_valid_status in (318,319,320,321,322) then s.id_synthese else null end
+	    ) as evalue,
+	    count(distinct 
+		    case when v.id_vote_validation is not null and s.id_nomenclature_valid_status 
+			    not in (318,319,320,321,322) then s.id_synthese else null end
+	    ) as en_cours
+    from gn_synthese.synthese s
+    left join gn_module_validation_col.t_vote_validation v on v.uuid_attached_row = s.unique_id_sinp
+    where s.date_min >= '2019-01-01' and s.cd_nom in (select * from taxonomie.find_all_taxons_children(:cd_nom) UNION SELECT (:cd_nom) )
+    """
+    result = DB.session.execute(sql, dict(cd_nom=cd_nom))
+    return dict(result.fetchone())
 #Bibliotheque des niveaux de validation : api/nomenclatures/nomenclature/STATUT_VALID
