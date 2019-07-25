@@ -8,7 +8,7 @@
         </div>
          <div class="card">
               <div class="card-body">
-                <validation-stats-taxon></validation-stats-taxon>
+                <validation-stats-taxon [cd_nom]="taxon.cd_nom" [lb_nom]="taxon.lb_nom" *ngIf="taxon"></validation-stats-taxon>
               </div>
         </div>
     </div>

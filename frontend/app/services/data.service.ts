@@ -27,6 +27,10 @@ export class DataService {
         return this._api.get<GeoJSON>(`${AppConfig.API_TAXHUB}/taxref/${cd_nom}`);
     }
 
+    getStatsTaxon(cd_nom){
+        return this._api.get<GeoJSON>(`${AppConfig.API_ENDPOINT}/validation_col/stats/${cd_nom}`);
+    }
+
     postVote(id_synthese, statut){
         return this._api.post<any>(
             `${AppConfig.API_ENDPOINT}/validation_col/${id_synthese}`, {comment:'test',statut:statut }

@@ -8,11 +8,19 @@ import { DataService } from '../../services/data.service';
   styleUrls: ["validation-stats-taxon.component.scss"]
 })
 export class ValidationStatsTaxon implements OnInit {
-
-    //@Input() selectedTaxon: number;
+    stats:any;
+    @Input() cd_nom: number;
+    @Input() lb_nom: string;
     constructor(private dataService: DataService) {}
     
-
+    ngOnChanges(){
+        this.dataService.getStatsTaxon(this.cd_nom).subscribe(
+            data => {
+                this.stats=data;
+                this.stats.total=this.stats.en_cours + this.stats.evalue + this.stats.non_evalue;
+            }
+        )
+    }
 
 
 }
