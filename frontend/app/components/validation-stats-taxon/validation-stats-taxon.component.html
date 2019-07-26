@@ -1,5 +1,5 @@
-Progression pour le taxon {{ lb_nom }}
---  {{ ((stats?.evalue / stats?.total) * 100) }} --
+<p>Progression pour le taxon <i>{{ lb_nom }}</i></p>
+<p><small>Données de moins de 2 ans</small></p>
 <div class="progress">
   <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [ngStyle]="{'width.%':  ((stats?.evalue / stats?.total) * 100) }" attr.aria-valuenow="{{ (stats?.evalue / stats?.total) * 100 }}" aria-valuemin="0" aria-valuemax="100"> {{stats?.evalue}}  </div>
   <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" [ngStyle]="{'width.%':  ((stats?.en_cours / stats?.total) * 100) }" attr.aria-valuenow="{{ (stats?.en_cours  / stats?.total) * 100 }}" aria-valuemin="0" aria-valuemax="100"> {{stats?.en_cours}}  </div>

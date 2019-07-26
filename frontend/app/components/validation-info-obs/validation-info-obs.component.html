@@ -15,10 +15,14 @@
                 Occurence
             </div>
             <div class="card-body">
-                <table class="table table-sm">
+                <table class="table table-sm table-hover">
                     <tr>
                         <td>Nom</td>
                         <td><strong>{{ properties?.nom_cite}}</strong><span *ngIf="obsTaxon?.nom_vern"> - {{ obsTaxon?.nom_vern }} </span><small>[ {{ properties?.cd_nom }} ]</small></td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>{{ properties?.date_min | date:'dd/MM/yyyy' }} <span *ngIf="properties?.date_max!=properties?.date_min"> - {{ properties?.date_max | date:'dd/MM/yyyy' }}</span></td>
                     </tr>
                     <tr>
                         <td>Effectif</td>
@@ -39,7 +43,7 @@
                 Etat et comportement
             </div>
             <div class="card-body">
-                <table class="table table-sm">
+                <table class="table table-sm table-hover">
                     <tr>
                         <td>Stade de vie</td>
                         <td> <span *ngIf="properties?.life_stage;else default_value"> {{ properties?.life_stage }}</span></td>
@@ -58,7 +62,7 @@
                     </tr>
                     <tr> 
                         <td>Références</td>
-                        <td>{{ properties?.id_synthese }} - {{ properties?.unique_id_sinp }}</td>
+                        <td><small>{{ properties?.id_synthese }} / {{ properties?.unique_id_sinp }}</small></td>
                     </tr>
                 </table>
             </div>
@@ -71,7 +75,7 @@
                 Contexte de l'observation
             </div>
             <div class="card-body">
-                <table class="table table-sm">
+                <table class="table table-sm table-hover">
                     <tr>
                         <td>Observateur(s)</td>
                         <td> <span *ngIf="properties?.observers;else default_value"> {{ properties?.observers }}</span></td>
