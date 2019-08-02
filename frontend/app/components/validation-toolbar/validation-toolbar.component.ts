@@ -21,6 +21,10 @@ export class ValidationToolbar implements OnInit {
     };
 
     onVote(value_status){
+        if( (value_status == 321 || value_status == 320) && (this.commentFormControl.value == null || this.commentFormControl.value.length < 5 )) {
+            this.toastr.error('Merci de commenter votre évaluation pour les statuts "Invalide" et "Douteux" ');
+            return
+        } 
         this.dataService.postVote( this.id_synthese , value_status , this.commentFormControl.value ).subscribe(
             data => {
                 this.toastr.success('Vote enregistré');
