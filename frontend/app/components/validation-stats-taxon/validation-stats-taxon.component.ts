@@ -9,12 +9,14 @@ import { DataService } from '../../services/data.service';
 })
 export class ValidationStatsTaxon implements OnInit {
     stats:any;
-    @Input() cd_nom: number;
     @Input() lb_nom: string;
+    @Input() lst_taxons: any[];
     constructor(private dataService: DataService) {}
     
     ngOnChanges(){
-        this.dataService.getStatsTaxon(this.cd_nom).subscribe(
+        this.lst_cd_noms=[];
+        for (let e of this.lst_taxons) { this.lst_cd_noms.push(e.cd_nom) };
+        this.dataService.getStatsTaxon(this.lst_cd_noms).subscribe(
             data => {
                 this.stats=data;
                 this.stats.total=this.stats.en_cours + this.stats.evalue + this.stats.non_evalue;

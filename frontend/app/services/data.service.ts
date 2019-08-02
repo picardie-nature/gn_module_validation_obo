@@ -19,16 +19,16 @@ import { Observable } from 'rxjs';
 export class DataService {
     constructor(private _api: HttpClient) { }
 
-    getOneSyntheseObservation(cd_nom) {
-        return this._api.get<GeoJSON>(`${AppConfig.API_ENDPOINT}/validation_col/taxon/${cd_nom}/next`);
+    getOneSyntheseObservation(lst_cd_noms) {
+        return this._api.get<GeoJSON>(`${AppConfig.API_ENDPOINT}/validation_col/next/?cd_noms=${lst_cd_noms}`);
     }
 
     getTaxref(cd_nom) {
         return this._api.get<GeoJSON>(`${AppConfig.API_TAXHUB}/taxref/${cd_nom}`);
     }
 
-    getStatsTaxon(cd_nom){
-        return this._api.get<GeoJSON>(`${AppConfig.API_ENDPOINT}/validation_col/stats/${cd_nom}`);
+    getStatsTaxon(lst_cd_noms){
+        return this._api.get<GeoJSON>(`${AppConfig.API_ENDPOINT}/validation_col/stats/?cd_noms=${lst_cd_noms}`);
     }
 
     postVote(id_synthese, statut){

@@ -9,16 +9,16 @@
                 <validation-select-taxon (selectedTaxon)="loadTaxon($event)"></validation-select-taxon>
               </div>
         </div>
-         <div class="card">
+         <div class="card" *ngIf="lst_taxons?.length > 0">
               <div class="card-body">
-                <validation-stats-taxon [cd_nom]="taxon.cd_nom" [lb_nom]="taxon.lb_nom" *ngIf="taxon"></validation-stats-taxon>
+                <validation-stats-taxon [lst_taxons]="lst_taxons" ></validation-stats-taxon>
               </div>
         </div>
     </div>
     <div class="col col-sm-10">
         <div class="card card-body">
             <div class="row">
-                <div class="col-sm"><validation-info-obs [cd_nom]="taxon.cd_nom" *ngIf="taxon; else please_select_taxon"> </validation-info-obs></div>
+                <div class="col-sm"><validation-info-obs [lst_taxons]="lst_taxons" *ngIf="lst_taxons?.length > 0; else please_select_taxon"> </validation-info-obs></div>
             </div>
         </div>
     </div>

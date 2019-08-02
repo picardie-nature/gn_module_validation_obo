@@ -14,11 +14,10 @@ export class ValidationColViewComponent implements OnInit {
      private toastr: ToastrService
   ) {}
 
-  loadTaxon(a){ 
-    this.taxon = null;
+  loadTaxon(a){ //charge une liste de taxon
+    this.lst_taxons = a.slice(0);
     console.log('chargement de ');
-    console.log(a.cd_nom);
-    this.taxon = a;
-    this.toastr.info('Debut de la validation pour <i>'+a.lb_nom+'</i>','Début',{allowHtml: true});
+    console.log(a);
+    this.toastr.info('Début de la validation');
   }
 }

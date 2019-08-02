@@ -9,7 +9,7 @@ import { DataService } from '../../services/data.service';
 })
 export class ValidationInfoObsComponent implements OnInit {
 
-  @Input() cd_nom: number;
+  @Input() lst_taxons: any[];
   properties: any[];
   data:any[];
 
@@ -19,7 +19,9 @@ export class ValidationInfoObsComponent implements OnInit {
     this.data=null;
     this.properties=null;
     this.obsTaxon=null;
-    this.dataService.getOneSyntheseObservation(this.cd_nom).subscribe(
+    this.lst_cd_noms=[];
+    for (let e of this.lst_taxons) { this.lst_cd_noms.push(e.cd_nom) };
+    this.dataService.getOneSyntheseObservation(this.lst_cd_noms).subscribe(
         data => {
             this.properties=data['properties'];
             this.data=data;
