@@ -9,10 +9,23 @@ import { DataService } from '../services/data.service';
 })
 export class ValidationColViewComponent implements OnInit {
   taxon = null;
+  statuts:any;
   constructor(
      private dataService: DataService,
      private toastr: ToastrService
   ) {}
+
+
+ ngOnInit(){
+    this.dataService.getStatusDefinitions().subscribe(
+        data => {
+            this.statuts = data.values ;
+
+        }
+
+    )
+
+ }
 
   loadTaxon(a){ //charge une liste de taxon
     this.lst_taxons = a.slice(0);
@@ -21,3 +34,4 @@ export class ValidationColViewComponent implements OnInit {
     this.toastr.info('Début de la validation');
   }
 }
+
