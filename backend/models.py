@@ -19,6 +19,7 @@ class TValidationsCol(DB.Model):
     id_vote_validation = DB.Column(DB.Integer, primary_key=True)
     uuid_attached_row = DB.Column(UUID(as_uuid=True))
     id_nomenclature_valid_status = DB.Column(DB.Integer)
+    commentaire =  DB.Column(DB.String)
     id_validator = DB.Column(DB.Integer)
     date_vote = DB.Column(DB.DateTime, server_default=func.now())
     validation_label = DB.relationship(
@@ -43,12 +44,13 @@ class RecordValidation():
         )
         return q.one().as_geofeature(geoCol='the_geom_4326',idCol='id_synthese',recursif=True)
     
-    def vote(self,statut,id_validator):
+    def vote(self,statut,id_validator,commentaire=None):
         try :
             addValidation = TValidationsCol(
                 uuid_attached_row = self.uuid,
                 id_nomenclature_valid_status = statut,
-                id_validator = id_validator
+                id_validator = id_validator,
+                commentaire = commentaire
             )
             DB.session.add(addValidation)
             DB.session.commit()

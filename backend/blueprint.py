@@ -59,7 +59,7 @@ def post_status_vote(info_role, id_synthese):
         return "Aucun statut de validation n'est sélectionné", 400
     
     obs = RecordValidation(id_synthese)
-    if obs.vote(data['statut'],id_validator = info_role.id_role):
+    if obs.vote(data['statut'],id_validator = info_role.id_role,commentaire = data["comment"]) :
         return data
     else: #Se produit généralement si les votes sont fermés pour cette observation
         return ( dict(error="vote non pris en compte"), 403 )

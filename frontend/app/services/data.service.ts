@@ -31,9 +31,9 @@ export class DataService {
         return this._api.get<GeoJSON>(`${AppConfig.API_ENDPOINT}/validation_col/stats/?cd_noms=${lst_cd_noms}`);
     }
 
-    postVote(id_synthese, statut){
+    postVote(id_synthese, statut,comment = null){
         return this._api.post<any>(
-            `${AppConfig.API_ENDPOINT}/validation_col/${id_synthese}`, {comment:'test',statut:statut }
+            `${AppConfig.API_ENDPOINT}/validation_col/${id_synthese}`, {comment:comment,statut:statut }
         );
     }
 }
