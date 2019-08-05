@@ -1,6 +1,6 @@
 Selectionnez une ou plusieurs familles à valider
 
-<pnx-taxonomy [idList]="600" [charNumber]="3" [listLength]="10" [parentFormControl]="formService.selectTaxonForm.controls.cd_nom" (onChange)="onSelectedTaxon($event)"></pnx-taxonomy>
+<pnx-taxonomy [idList]="ModuleConfig.ID_LISTE_TAXONS" [charNumber]="3" [listLength]="10" [parentFormControl]="formService.selectTaxonForm.controls.cd_nom" (onChange)="onSelectedTaxon($event)"></pnx-taxonomy>
 
 <div class="alert alert-warning taxon-alert" *ngIf="listSelectedTaxons.length > 0">
      <b> Taxon(s) sélectionné(s):</b>

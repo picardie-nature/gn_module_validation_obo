@@ -87,9 +87,9 @@ def get_next_obs(info_role):
                 )
                 AND syn.id_nomenclature_valid_status=ref_nomenclatures.get_id_nomenclature('STATUT_VALID','0')
                 AND coalesce(id_validator,-1)!=(:id_validator)
-            ORDER BY COALESCE(p.priority,0) DESC, date_max DESC LIMIT 2"""
+            ORDER BY COALESCE(p.priority,0) DESC, date_max DESC LIMIT (:n_random)"""
     #TODO ORM
-    result = DB.session.execute(sql, dict(lst_cd_nom=lst_cd_nom, id_validator=id_validator))
+    result = DB.session.execute(sql, dict(lst_cd_nom=lst_cd_nom, id_validator=id_validator, n_random = blueprint.config['N_RANDOM']))
     potential_reccord =  [r[0] for r in result]
     shuffle(potential_reccord)  
     

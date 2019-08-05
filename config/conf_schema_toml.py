@@ -8,5 +8,6 @@ from marshmallow import Schema, fields
 
 
 class GnModuleSchemaConf(Schema):
-    pass
+    N_RANDOM = fields.Integer(missing=5) #Choisi 1 données parmis les N_RANDOM prioritaires (pour diminuer les risques que 2 validateurs évaluent simultanément la même donnée)
+    ID_LISTE_TAXONS = fields.Integer(missing=600)
 
