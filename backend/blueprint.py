@@ -93,6 +93,9 @@ def get_next_obs(info_role):
     potential_reccord =  [r[0] for r in result]
     shuffle(potential_reccord)  
     
+    if len(potential_reccord) < 1 :
+        return dict(error_type='no reccords'),404
+    
     obs = RecordValidation(potential_reccord[0])
     
     return obs.getFullRecord()

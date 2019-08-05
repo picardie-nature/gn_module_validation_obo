@@ -1,6 +1,7 @@
 <ng-template #default_value><small>Non renseigné</small></ng-template>
-<ng-template #load_in_progress>
-    Chargement de la prochaine donnée... <img src="assets/images/Spinner.gif" alt="Chargement..." height="40" width="40" />
+<ng-template #no_data>
+    <span *ngIf="!error_type"> Chargement de la prochaine donnée... <img src="assets/images/Spinner.gif" alt="Chargement..." height="40" width="40" /> </span>
+    <span *ngIf="error_type == 'no reccords' ">  <i class="fa fa-bed" style="font-size:xx-large" ></i> <small> Aucune donnée à valider dans le(s) taxon(s) sélectionné(s) (ou vous n'avez pas les droits suffisants)</small></span>
 </ng-template>
 
 <div class="row">
@@ -9,7 +10,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="obsTaxon; else load_in_progress">
+<div class="row" *ngIf="obsTaxon; else no_data">
 
     <div class="col col-sm-4">
         <div class="card">
