@@ -69,5 +69,12 @@ CREATE TRIGGER tri_insert_validation_vote BEFORE INSERT ON gn_module_validation_
 --TODO CREER UNE FUNCTION HELPER "can_vote(uuid)" et can_vote(uuid,id_user)
 
 
+--Priorisation de la validation
+CREATE TABLE gn_module_validation_col.t_validation_priority(
+    uuid_attached_row uuid PRIMARY KEY,
+    priority integer NOT NULL
+);
+COMMENT ON TABLE gn_module_validation_col.t_validation_priority IS 'Cette table permet de soumettre manuellement certaines données en validation prioritaire';
+
 
 
