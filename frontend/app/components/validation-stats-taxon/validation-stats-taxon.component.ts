@@ -15,6 +15,7 @@ export class ValidationStatsTaxon implements OnInit {
     
     ngOnChanges(){
         this.lst_cd_noms=[];
+        this.stats=null;
         for (let e of this.lst_taxons) { this.lst_cd_noms.push(e.cd_nom) };
         this.dataService.getStatsTaxon(this.lst_cd_noms).subscribe(
             data => {

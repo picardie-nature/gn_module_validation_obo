@@ -29,10 +29,9 @@ export class ValidationInfoObsComponent implements OnInit {
             this.geoJson={type:'FeatureCollection', features:[data]};
                this.dataService.getTaxref(this.properties.cd_nom).subscribe(
                 dataTaxref => {
-                    this.obsTaxon=dataTaxref;
+                    this.obsTaxon = dataTaxref;
                 }
-           )
-          
+           )   
         }
     )
 

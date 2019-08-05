@@ -1,5 +1,7 @@
 <ng-template #default_value><small>Non renseigné</small></ng-template>
-
+<ng-template #load_in_progress>
+    Chargement de la prochaine donnée... <img src="assets/images/Spinner.gif" alt="Chargement..." height="40" width="40" />
+</ng-template>
 
 <div class="row">
     <div class="col col-sm-12">
@@ -7,7 +9,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" *ngIf="obsTaxon; else load_in_progress">
 
     <div class="col col-sm-4">
         <div class="card">
