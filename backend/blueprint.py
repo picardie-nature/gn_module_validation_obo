@@ -78,8 +78,8 @@ def get_next_obs(info_role):
     #return tuple_cd_nom
     sql="""
         SELECT id_synthese FROM gn_synthese.synthese syn
-	        LEFT JOIN gn_module_validation_col.t_vote_validation v ON v.uuid_attached_row = syn.unique_id_sinp
-	        LEFT JOIN gn_module_validation_col.t_validation_priority p ON syn.unique_id_sinp = p.uuid_attached_row
+	        LEFT JOIN gn_module_validation_obo.t_vote_validation v ON v.uuid_attached_row = syn.unique_id_sinp
+	        LEFT JOIN gn_module_validation_obo.t_validation_priority p ON syn.unique_id_sinp = p.uuid_attached_row
             WHERE 
                 cd_nom in (
                     SELECT DISTINCT taxonomie.find_all_taxons_children(a.cd_nom) as cd_nom FROM (SELECT unnest(:lst_cd_nom) as cd_nom) as a
@@ -122,7 +122,7 @@ def get_stats_taxon():
 			    not in (318,319,320,321,322) then s.id_synthese else null end
 	    ) as en_cours
     from gn_synthese.synthese s
-    left join gn_module_validation_col.t_vote_validation v on v.uuid_attached_row = s.unique_id_sinp
+    left join gn_module_validation_obo.t_vote_validation v on v.uuid_attached_row = s.unique_id_sinp
     where s.date_min >= '2018-01-01' and s.cd_nom in (
         SELECT DISTINCT taxonomie.find_all_taxons_children(a.cd_nom) as cd_nom FROM (SELECT unnest(:lst_cd_nom) as cd_nom) as a
         UNION SELECT unnest(:lst_cd_nom)
