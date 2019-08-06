@@ -90,4 +90,3 @@ WHERE taxref.id_rang IN ('CL','OR','FM');
 COMMIT;
 
 
-
