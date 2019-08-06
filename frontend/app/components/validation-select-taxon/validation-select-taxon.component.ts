@@ -1,6 +1,7 @@
 import { Component, Input, Output, OnInit,EventEmitter } from "@angular/core";
-
 import { FormService } from '../../services/form.service';
+import { ModuleConfig } from "../../module.config";
+
 
 @Component({
   selector: "validation-select-taxon",
@@ -10,6 +11,7 @@ export class ValidationSelectTaxon implements OnInit {
 
     @Output() selectedTaxon = new EventEmitter<string>();
     listSelectedTaxons = [];
+    public ModuleConfig = ModuleConfig;
     constructor(private formService: FormService) {}
         
 

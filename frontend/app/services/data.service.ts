@@ -20,7 +20,7 @@ export class DataService {
     constructor(private _api: HttpClient) { }
 
     getOneSyntheseObservation(lst_cd_noms) {
-        return this._api.get<GeoJSON>(`${AppConfig.API_ENDPOINT}/validation_col/next/?cd_noms=${lst_cd_noms}`);
+        return this._api.get<GeoJSON>(`${AppConfig.API_ENDPOINT}/validation_obo/next/?cd_noms=${lst_cd_noms}`);
     }
 
     getTaxref(cd_nom) {
@@ -28,12 +28,16 @@ export class DataService {
     }
 
     getStatsTaxon(lst_cd_noms){
-        return this._api.get<GeoJSON>(`${AppConfig.API_ENDPOINT}/validation_col/stats/?cd_noms=${lst_cd_noms}`);
+        return this._api.get<GeoJSON>(`${AppConfig.API_ENDPOINT}/validation_obo/stats/?cd_noms=${lst_cd_noms}`);
+    }
+
+    getStatusDefinitions(){
+        return this._api.get<GeoJSON>(`${AppConfig.API_ENDPOINT}/nomenclatures/nomenclature/STATUT_VALID`);
     }
 
     postVote(id_synthese, statut,comment = null){
         return this._api.post<any>(
-            `${AppConfig.API_ENDPOINT}/validation_col/${id_synthese}`, {comment:comment,statut:statut }
+            `${AppConfig.API_ENDPOINT}/validation_obo/${id_synthese}`, {comment:comment,statut:statut }
         );
     }
 }

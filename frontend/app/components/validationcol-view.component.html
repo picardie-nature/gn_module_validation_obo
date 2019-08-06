@@ -1,6 +1,10 @@
 <ng-template #please_select_taxon>
    <h2>Bienvenue sur le module de validation</h2>
     <p>Pour commencer, veuillez sélectionner une famille ou un ordre à valider</p>
+
+    <li *ngFor="let statut of statuts;"> {{statut.label_default}}</li>
+
+
 </ng-template>
 <div class="row">
     <div class="col col-sm-2">

@@ -17,6 +17,7 @@ export class ValidationInfoObsComponent implements OnInit {
 
   ngOnChanges() {
     this.data=null;
+    this.error_type=null;
     this.properties=null;
     this.obsTaxon=null;
     this.lst_cd_noms=[];
@@ -29,10 +30,13 @@ export class ValidationInfoObsComponent implements OnInit {
             this.geoJson={type:'FeatureCollection', features:[data]};
                this.dataService.getTaxref(this.properties.cd_nom).subscribe(
                 dataTaxref => {
-                    this.obsTaxon=dataTaxref;
+                    this.obsTaxon = dataTaxref;
                 }
-           )
-          
+           )   
+        },
+        error => {
+            console.log(error);
+            this.error_type = error.error.error_type;
         }
     )
 

@@ -79,6 +79,7 @@ def get_next_obs(info_role):
     sql="""
         SELECT id_synthese FROM gn_synthese.synthese syn
 	        LEFT JOIN gn_module_validation_col.t_vote_validation v ON v.uuid_attached_row = syn.unique_id_sinp
+	        LEFT JOIN gn_module_validation_col.t_validation_priority p ON syn.unique_id_sinp = p.uuid_attached_row
             WHERE 
                 cd_nom in (
                     SELECT DISTINCT taxonomie.find_all_taxons_children(a.cd_nom) as cd_nom FROM (SELECT unnest(:lst_cd_nom) as cd_nom) as a
@@ -86,11 +87,14 @@ def get_next_obs(info_role):
                 )
                 AND syn.id_nomenclature_valid_status=ref_nomenclatures.get_id_nomenclature('STATUT_VALID','0')
                 AND coalesce(id_validator,-1)!=(:id_validator)
-            ORDER BY date_max DESC LIMIT 10"""
+            ORDER BY COALESCE(p.priority,0) DESC, date_max DESC LIMIT (:n_random)"""
     #TODO ORM
-    result = DB.session.execute(sql, dict(lst_cd_nom=lst_cd_nom, id_validator=id_validator))
+    result = DB.session.execute(sql, dict(lst_cd_nom=lst_cd_nom, id_validator=id_validator, n_random = blueprint.config['N_RANDOM']))
     potential_reccord =  [r[0] for r in result]
     shuffle(potential_reccord)  
+    
+    if len(potential_reccord) < 1 :
+        return dict(error_type='no reccords'),404
     
     obs = RecordValidation(potential_reccord[0])
     
