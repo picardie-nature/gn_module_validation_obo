@@ -24,7 +24,7 @@
     </div>
 
     <div class="row">
-        <textarea class="form-control" [formControl]="commentFormControl" rows="2" placeholder="Commentaire de validation" style="margin-top:10px"></textarea>
+        <textarea class="form-control" [attr.disabled]="id_synthese ? null : 'disabled'" [formControl]="commentFormControl" rows="2" placeholder="Commentaire de validation" style="margin-top:10px"></textarea>
     </div>
     
 </div>
