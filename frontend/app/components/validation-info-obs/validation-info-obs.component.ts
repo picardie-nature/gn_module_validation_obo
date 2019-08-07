@@ -1,5 +1,5 @@
 import { Component, Input, Output, OnInit,EventEmitter } from "@angular/core";
-
+import * as turf from "turf";
 import { DataService } from '../../services/data.service';
 
 @Component({
@@ -13,7 +13,10 @@ export class ValidationInfoObsComponent implements OnInit {
   properties: any[];
   data:any[];
 
-  constructor(private dataService: DataService) {}
+  constructor(
+        private dataService: DataService,
+
+) {}
 
   ngOnChanges() {
     this.data=null;
@@ -26,7 +29,8 @@ export class ValidationInfoObsComponent implements OnInit {
         data => {
             this.properties=data['properties'];
             this.data=data;
-            this.latLng=[data.geometry.coordinates[1],data.geometry.coordinates[0]]; //ajouter un trick pour gerer les lignes, polygones, multipoint, etc.. --> Turfjs ?
+            this.centroid = turf.centroid(data.geometry);
+            this.latLng=[ this.centroid.geometry.coordinates[1] , this.centroid.geometry.coordinates[0] ];
             this.geoJson={type:'FeatureCollection', features:[data]};
                this.dataService.getTaxref(this.properties.cd_nom).subscribe(
                 dataTaxref => {
