@@ -14,6 +14,7 @@ export class ValidationInfoObsComponent implements OnInit {
   data:any[];
   data_cache:any[];
   data_cache = [];
+  load_flag = false;
   constructor(
         private dataService: DataService,
 
@@ -27,24 +28,11 @@ export class ValidationInfoObsComponent implements OnInit {
     this.obsTaxon=null;
     this.lst_cd_noms=[];
     for (let e of this.lst_taxons) { this.lst_cd_noms.push(e.cd_nom) };
+    
+    this.display_data(); 
+    this.load_data(); //preload next
 
-    if(this.data_cache.length > 0)
-    { 
-        this.display_data(this.data_cache[0]); 
-        console.log('a'); 
-    }else{
-    //load and display data
-        this.dataService.getOneSyntheseObservation(this.lst_cd_noms).subscribe( 
-            data => {
-                this.data_cache.push(data);
-                if(this.data == null){
-                    this.display_data(this.data_cache[0]); 
-                    console.log('b'); 
-                }
-                console.log(this.data_cache);
-            }
-        )
-    }
+
   }
 
   onVote(e){
@@ -57,24 +45,30 @@ export class ValidationInfoObsComponent implements OnInit {
     this.ngOnChanges();
   }
 
-  display_data(data){
-            this.properties=data['properties'];
-            this.data=data;
-            this.centroid = turf.centroid(data.geometry);
-            this.latLng=[ this.centroid.geometry.coordinates[1] , this.centroid.geometry.coordinates[0] ];
-            this.geoJson={type:'FeatureCollection', features:[data]};
-            this.dataService.getTaxref(this.properties.cd_nom).subscribe(
-                dataTaxref => {
-                    this.obsTaxon = dataTaxref;
-                }
-           );
-            this.dataService.getOneSyntheseObservation(this.lst_cd_noms).subscribe( //préchargement du suivant
-                data => {
-                console.log('apush');
+    load_data(display=false){ //add data to data_cache
+        this.dataService.getOneSyntheseObservation(this.lst_cd_noms).subscribe(
+            data => {
                 this.data_cache.push(data);
-                console.log(this.data_cache);
+                if(display) { this.display_data() }
             }
-    )
-    
-    };
+        )
+    }
+
+    display_data(){ 
+            if (this.data_cache.length > 0) { //data dispo
+                this.properties=this.data_cache[0]['properties'];
+                this.data=this.data_cache[0];
+                this.centroid = turf.centroid(this.data_cache[0].geometry);
+                this.latLng=[ this.centroid.geometry.coordinates[1] , this.centroid.geometry.coordinates[0] ];
+                this.geoJson={type:'FeatureCollection', features:[this.data_cache[0]]};
+                this.dataService.getTaxref(this.properties.cd_nom).subscribe(
+                    dataTaxref => {
+                        this.obsTaxon = dataTaxref;
+                    }
+               );
+            }else{
+                console.log('abc');
+                this.load_data(true);
+            }
+    }
 }
