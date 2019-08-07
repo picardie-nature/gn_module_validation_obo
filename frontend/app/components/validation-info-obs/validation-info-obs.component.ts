@@ -21,7 +21,6 @@ export class ValidationInfoObsComponent implements OnInit {
   ) {}
 
   ngOnChanges() {
-    console.log("onchange");
     this.data=null;
     this.error_type=null;
     this.properties=null;
@@ -29,30 +28,30 @@ export class ValidationInfoObsComponent implements OnInit {
     this.lst_cd_noms=[];
     for (let e of this.lst_taxons) { this.lst_cd_noms.push(e.cd_nom) };
     
-    this.display_data(); 
-    this.load_data(); //preload next
+    this.display_data();
+    this.load_data(false,true); //preload next
 
-
-  }
+  };
 
   onVote(e){
+    this.data=null; //pas utile ?
+    this.properties=null; //pas utile ?
     this.data_cache.shift();
-    console.log(e);
-    console.log('onVote depuis info-obs');
     console.log(this.data_cache);
-    this.data=null;
-    this.properties=null;
     this.ngOnChanges();
-  }
+  };
 
     load_data(display=false){ //add data to data_cache
+        if(this.load_flag) { return } //chargement en cours, on n'en lance pas d'autre
+        this.load_flag = true;
         this.dataService.getOneSyntheseObservation(this.lst_cd_noms).subscribe(
             data => {
+                this.load_flag = false;
                 this.data_cache.push(data);
-                if(display) { this.display_data() }
+                if(this.data==null) { this.display_data(); this.load_data(false); }                 //Pour tester si rien d'afficher, et si c'est le cas on affiche et charge le suivant
             }
         )
-    }
+    };
 
     display_data(){ 
             if (this.data_cache.length > 0) { //data dispo
@@ -67,8 +66,7 @@ export class ValidationInfoObsComponent implements OnInit {
                     }
                );
             }else{
-                console.log('abc');
                 this.load_data(true);
             }
-    }
+    };
 }
