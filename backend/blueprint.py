@@ -78,11 +78,11 @@ def get_next_obs(info_role):
     #return tuple_cd_nom
     sql="""
         WITH locked_by_other AS 
-	        (SELECT uuid_attached_row FROM gn_module_validation_obo.t_vote_validation WHERE id_validator != (:id_validator) AND id_nomenclature_valid_status is null AND (now() - date_loaded < '10 minutes' )),
+	        (SELECT uuid_attached_row FROM gn_module_validation_obo.t_vote_validation WHERE id_validator != (:id_validator) AND id_nomenclature_valid_status is null AND (now() - date_loaded < (:lock_delay) )),
 	        already_voted AS 
 	        (SELECT uuid_attached_row FROM gn_module_validation_obo.t_vote_validation WHERE id_validator = (:id_validator) AND id_nomenclature_valid_status IS NOT null),
 	        passed AS
-	        (SELECT uuid_attached_row FROM gn_module_validation_obo.t_vote_validation  WHERE id_validator = (:id_validator) AND id_nomenclature_valid_status IS NULL AND (now() - date_loaded < '2 days' )),
+	        (SELECT uuid_attached_row FROM gn_module_validation_obo.t_vote_validation  WHERE id_validator = (:id_validator) AND id_nomenclature_valid_status IS NULL AND (now() - date_loaded < (:skip_delay) )),
 	        u AS 
 		        (SELECT uuid_attached_row FROM locked_by_other
 		        UNION SELECT uuid_attached_row FROM already_voted
@@ -99,7 +99,7 @@ def get_next_obs(info_role):
         ORDER BY COALESCE(p.priority,0) DESC, date_max DESC LIMIT 1
     """
     #TODO AJOUTER ONCONFLICT et update les date
-    result = DB.session.execute(sql, dict(lst_cd_nom=lst_cd_nom, id_validator=id_validator, n_random = blueprint.config['N_RANDOM']))
+    result = DB.session.execute(sql, dict(lst_cd_nom=lst_cd_nom, id_validator=id_validator, skip_delay = blueprint.config['SKIP_DELAY'], lock_delay = blueprint.config['LOCK_DELAY']))
     potential_reccord =  [r[0] for r in result]
     shuffle(potential_reccord)  
     
