@@ -12,25 +12,35 @@ export class ValidationInfoObsComponent implements OnInit {
   @Input() lst_taxons: any[];
   properties: any[];
   data:any[];
-  data_cache:any[];
-  data_cache = [];
+  @Input() data_cache = [];
   load_flag = false;
   constructor(
         private dataService: DataService,
 
   ) {}
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
+
+    console.log(JSON.stringify(changes.lst_taxons.currentValue));
+    console.log(JSON.stringify(changes.lst_taxons.previousValue));
+
+    if (JSON.stringify(changes.lst_taxons.currentValue) != JSON.stringify(changes.lst_taxons.previousValue) ) { console.log('clear cache'); this.data_cache=[]; }
+
+    this.initialize_new_obs();
+
+  };
+
+  initialize_new_obs()
+  {
     this.data=null;
     this.error_type=null;
     this.properties=null;
     this.obsTaxon=null;
+
     this.lst_cd_noms=[];
     for (let e of this.lst_taxons) { this.lst_cd_noms.push(e.cd_nom) };
-    
     this.display_data();
     this.load_data(false,true); //preload next
-
   };
 
   onVote(e){
@@ -38,10 +48,12 @@ export class ValidationInfoObsComponent implements OnInit {
     this.properties=null; //pas utile ?
     this.data_cache.shift();
     console.log(this.data_cache);
-    this.ngOnChanges();
+    this.initialize_new_obs();
+    console.log('pouette');
   };
 
     load_data(display=false){ //add data to data_cache
+        console.log('load_data');
         if(this.load_flag) { return } //chargement en cours, on n'en lance pas d'autre
         this.load_flag = true;
         this.dataService.getOneSyntheseObservation(this.lst_cd_noms).subscribe(
