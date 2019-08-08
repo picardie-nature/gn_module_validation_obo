@@ -8,6 +8,7 @@ from marshmallow import Schema, fields
 
 
 class GnModuleSchemaConf(Schema):
-    N_RANDOM = fields.Integer(missing=5) #Choisi 1 données parmis les N_RANDOM prioritaires (pour diminuer les risques que 2 validateurs évaluent simultanément la même donnée)
+    SKIP_DELAY = fields.String(missing='1 days') #Temps pendant lequel une données "passée" n'est plus affiché à l'utilisateur
+    LOCK_DELAY = fields.String(missing='10 minutes') #Temps de verrouillage d'une donnée affiché à un validateur
     ID_LISTE_TAXONS = fields.Integer(missing=600)
 

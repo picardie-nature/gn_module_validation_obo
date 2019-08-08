@@ -48,7 +48,7 @@ def index():
     return 'hello'
 
 @blueprint.route("/<id_synthese>", methods=["POST"])
-@permissions.check_cruved_scope("C", True, module_code="VALIDATION_COL")
+@permissions.check_cruved_scope("C", True, module_code="VALIDATION_OBO")
 @json_resp
 def post_status_vote(info_role, id_synthese):
     data = dict(request.get_json())
@@ -70,26 +70,36 @@ def post_status_vote(info_role, id_synthese):
 Prochaine observation à valider : la donnée la plus récente en attente de validation (random parmis les 10 plus récente)
 """
 @blueprint.route("/next/", methods=["GET"])
-@permissions.check_cruved_scope("C", True, module_code="VALIDATION_COL")
+@permissions.check_cruved_scope("C", True, module_code="VALIDATION_OBO")
 @json_resp
 def get_next_obs(info_role):
     id_validator = info_role.id_role
     lst_cd_nom = list(map(int,request.args['cd_noms'].split(',')))
     #return tuple_cd_nom
     sql="""
-        SELECT id_synthese FROM gn_synthese.synthese syn
-	        LEFT JOIN gn_module_validation_col.t_vote_validation v ON v.uuid_attached_row = syn.unique_id_sinp
-	        LEFT JOIN gn_module_validation_col.t_validation_priority p ON syn.unique_id_sinp = p.uuid_attached_row
-            WHERE 
-                cd_nom in (
-                    SELECT DISTINCT taxonomie.find_all_taxons_children(a.cd_nom) as cd_nom FROM (SELECT unnest(:lst_cd_nom) as cd_nom) as a
-                    UNION SELECT unnest(:lst_cd_nom) as cd_nom
-                )
-                AND syn.id_nomenclature_valid_status=ref_nomenclatures.get_id_nomenclature('STATUT_VALID','0')
-                AND coalesce(id_validator,-1)!=(:id_validator)
-            ORDER BY COALESCE(p.priority,0) DESC, date_max DESC LIMIT (:n_random)"""
-    #TODO ORM
-    result = DB.session.execute(sql, dict(lst_cd_nom=lst_cd_nom, id_validator=id_validator, n_random = blueprint.config['N_RANDOM']))
+        WITH locked_by_other AS 
+	        (SELECT uuid_attached_row FROM gn_module_validation_obo.t_vote_validation WHERE id_validator != (:id_validator) AND id_nomenclature_valid_status is null AND (now() - date_loaded < (:lock_delay) )),
+	        already_voted AS 
+	        (SELECT uuid_attached_row FROM gn_module_validation_obo.t_vote_validation WHERE id_validator = (:id_validator) AND id_nomenclature_valid_status IS NOT null),
+	        passed AS
+	        (SELECT uuid_attached_row FROM gn_module_validation_obo.t_vote_validation  WHERE id_validator = (:id_validator) AND id_nomenclature_valid_status IS NULL AND (now() - date_loaded < (:skip_delay) )),
+	        u AS 
+		        (SELECT uuid_attached_row FROM locked_by_other
+		        UNION SELECT uuid_attached_row FROM already_voted
+		        UNION SELECT uuid_attached_row FROM passed)
+        SELECT id_synthese FROM gn_synthese.synthese syn 
+        LEFT JOIN gn_module_validation_obo.t_validation_priority p ON syn.unique_id_sinp = p.uuid_attached_row
+        WHERE
+        syn.id_nomenclature_valid_status=ref_nomenclatures.get_id_nomenclature('STATUT_VALID','0')
+        AND cd_nom in (
+                SELECT DISTINCT taxonomie.find_all_taxons_children(a.cd_nom) as cd_nom FROM (SELECT unnest(:lst_cd_nom) as cd_nom) as a
+                UNION SELECT unnest(:lst_cd_nom) as cd_nom
+            ) 
+        AND unique_id_sinp NOT IN (SELECT uuid_attached_row FROM u)
+        ORDER BY COALESCE(p.priority,0) DESC, date_max DESC LIMIT 1
+    """
+    #TODO AJOUTER ONCONFLICT et update les date
+    result = DB.session.execute(sql, dict(lst_cd_nom=lst_cd_nom, id_validator=id_validator, skip_delay = blueprint.config['SKIP_DELAY'], lock_delay = blueprint.config['LOCK_DELAY']))
     potential_reccord =  [r[0] for r in result]
     shuffle(potential_reccord)  
     
@@ -97,7 +107,12 @@ def get_next_obs(info_role):
         return dict(error_type='no reccords'),404
     
     obs = RecordValidation(potential_reccord[0])
-    
+
+    sql="""INSERT INTO gn_module_validation_obo.t_vote_validation (uuid_attached_row,id_validator, date_vote)
+           SELECT unique_id_sinp, (:id_validator), null FROM gn_synthese.synthese WHERE id_synthese = (:id_synthese)
+    """
+    DB.session.execute(sql, dict(id_synthese=potential_reccord[0], id_validator=id_validator))
+    DB.session.commit()
     return obs.getFullRecord()
     #TODO utiliser ORM ?
 
@@ -122,7 +137,7 @@ def get_stats_taxon():
 			    not in (318,319,320,321,322) then s.id_synthese else null end
 	    ) as en_cours
     from gn_synthese.synthese s
-    left join gn_module_validation_col.t_vote_validation v on v.uuid_attached_row = s.unique_id_sinp
+    left join gn_module_validation_obo.t_vote_validation v on v.uuid_attached_row = s.unique_id_sinp
     where s.date_min >= '2018-01-01' and s.cd_nom in (
         SELECT DISTINCT taxonomie.find_all_taxons_children(a.cd_nom) as cd_nom FROM (SELECT unnest(:lst_cd_nom) as cd_nom) as a
         UNION SELECT unnest(:lst_cd_nom)

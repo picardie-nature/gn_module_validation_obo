@@ -14,7 +14,7 @@ from geonature.core.gn_synthese.models import SyntheseOneRecord, Synthese, VSynt
 @serializable
 class TValidationsCol(DB.Model):
     __tablename__ = "t_vote_validation"
-    __table_args__ = {"schema": "gn_module_validation_col"}
+    __table_args__ = {"schema": "gn_module_validation_obo"}
 
     id_vote_validation = DB.Column(DB.Integer, primary_key=True)
     uuid_attached_row = DB.Column(UUID(as_uuid=True))
@@ -22,6 +22,7 @@ class TValidationsCol(DB.Model):
     commentaire =  DB.Column(DB.String)
     id_validator = DB.Column(DB.Integer)
     date_vote = DB.Column(DB.DateTime, server_default=func.now())
+    date_loaded = DB.Column(DB.DateTime, server_default=func.now())
     validation_label = DB.relationship(
         TNomenclatures,
         primaryjoin=(TNomenclatures.id_nomenclature == id_nomenclature_valid_status),
@@ -45,17 +46,28 @@ class RecordValidation():
         return q.one().as_geofeature(geoCol='the_geom_4326',idCol='id_synthese',recursif=True)
     
     def vote(self,statut,id_validator,commentaire=None):
-        try :
-            addValidation = TValidationsCol(
-                uuid_attached_row = self.uuid,
-                id_nomenclature_valid_status = statut,
-                id_validator = id_validator,
-                commentaire = commentaire
-            )
-            DB.session.add(addValidation)
+        vote_en_cours = DB.session.query(TValidationsCol).\
+            filter_by(uuid_attached_row = self.uuid).\
+            filter_by(id_validator = id_validator).one()
+        if vote_en_cours :
+            vote_en_cours.id_nomenclature_valid_status = statut
+            vote_en_cours.commentaire = commentaire
             DB.session.commit()
             DB.session.close()
             return True
-        except InternalError as e:
-            return False
+        else : #acces direct API ?
+            try:
+                addValidation = TValidationsCol(
+                    uuid_attached_row = self.uuid,
+                    id_nomenclature_valid_status = statut,
+                    id_validator = id_validator,
+                    commentaire = commentaire
+                )
+
+                DB.session.add(addValidation)
+                DB.session.commit()
+                DB.session.close()
+                return True
+            except InternalError as e:
+                return False
 
