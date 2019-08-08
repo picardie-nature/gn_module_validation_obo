@@ -20,14 +20,8 @@ export class ValidationInfoObsComponent implements OnInit {
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-
-    console.log(JSON.stringify(changes.lst_taxons.currentValue));
-    console.log(JSON.stringify(changes.lst_taxons.previousValue));
-
-    if (JSON.stringify(changes.lst_taxons.currentValue) != JSON.stringify(changes.lst_taxons.previousValue) ) { console.log('clear cache'); this.data_cache=[]; }
-
+    if (JSON.stringify(changes.lst_taxons.currentValue) != JSON.stringify(changes.lst_taxons.previousValue) ) { this.data_cache=[]; }
     this.initialize_new_obs();
-
   };
 
   initialize_new_obs()
@@ -44,16 +38,11 @@ export class ValidationInfoObsComponent implements OnInit {
   };
 
   onVote(e){
-    this.data=null; //pas utile ?
-    this.properties=null; //pas utile ?
     this.data_cache.shift();
-    console.log(this.data_cache);
     this.initialize_new_obs();
-    console.log('pouette');
   };
 
     load_data(display=false){ //add data to data_cache
-        console.log('load_data');
         if(this.load_flag) { return } //chargement en cours, on n'en lance pas d'autre
         this.load_flag = true;
         this.dataService.getOneSyntheseObservation(this.lst_cd_noms).subscribe(
