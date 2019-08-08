@@ -20,6 +20,7 @@ CREATE TABLE gn_module_validation_obo.t_vote_validation (
     id_validator int,
     id_nomenclature_valid_status int, --statut proposé
     date_vote timestamp DEFAULT now(),
+	date_loaded timestamp NOT NULL DEFAULT now(),
     commentaire text
 );
 
