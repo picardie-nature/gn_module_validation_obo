@@ -1,4 +1,7 @@
 # Validation OBO (OneByOne)
+---
+## En cours de développement
+---
 Module validation "une par une" et collegiale
 
 Module de validation collégiale (2 validateurs doivent choisir le même statut) pour GéoNature.
