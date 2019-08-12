@@ -1,5 +1,4 @@
 import { Component, Input, Output, OnInit,EventEmitter } from "@angular/core";
-import * as turf from "turf";
 import { DataService } from '../../services/data.service';
 
 @Component({
@@ -58,8 +57,8 @@ export class ValidationInfoObsComponent implements OnInit {
             if (this.data_cache.length > 0) { //data dispo
                 this.properties=this.data_cache[0]['properties'];
                 this.data=this.data_cache[0];
-                this.centroid = turf.centroid(this.data_cache[0].geometry);
-                this.latLng=[ this.centroid.geometry.coordinates[1] , this.centroid.geometry.coordinates[0] ];
+                this.avg_node = this.geom_avg_node(this.data_cache[0].geometry);
+                this.latLng=[ this.avg_node[1] , this.avg_node[0] ];
                 this.geoJson={type:'FeatureCollection', features:[this.data_cache[0]]};
                 this.dataService.getTaxref(this.properties.cd_nom).subscribe(
                     dataTaxref => {
@@ -70,4 +69,21 @@ export class ValidationInfoObsComponent implements OnInit {
                 this.load_data(true);
             }
     };
+
+    geom_avg_node(geom){
+        var x=[];
+        var y=[];
+        function push_or_again(v){
+            if !Array.isArray(v[0]){
+                x.push(v[0]); y.push(v[1]);
+            }else{
+                for (var i = 0, len = v.length; i < len; i++) { push_or_again(v[i]); }
+             }
+        }
+        push_or_again(geom.coordinates);
+        var sum_x = x.reduce(function(a, b) { return a + b; });
+        var sum_y = y.reduce(function(a, b) { return a + b; });
+        return [sum_x/x.length , sum_y/y.length]
+    };
+
 }

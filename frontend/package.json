@@ -8,7 +8,5 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "turf": "^3.0.14"
-  }
+  "dependencies": {}
 }
